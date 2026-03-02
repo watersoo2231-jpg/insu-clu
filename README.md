@@ -25,14 +25,8 @@
 
 ---
 
-<!-- Replace with your demo GIF: <p align="center"><img src="docs/demo.gif" width="600" alt="EasyClaw Demo"></p> -->
-
 <p align="center">
-  <img src="docs/screenshots/welcome.png" width="270" alt="Welcome">
-  &nbsp;&nbsp;
-  <img src="docs/screenshots/env-check.png" width="270" alt="Environment Check">
-  &nbsp;&nbsp;
-  <img src="docs/screenshots/done.png" width="270" alt="Done">
+  <img src="docs/demo.gif" width="600" alt="EasyClaw Demo">
 </p>
 
 ## What is EasyClaw?
