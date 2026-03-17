@@ -120,7 +120,7 @@ const checkNodeAndOpenclaw = async (
     const raw = await run('node', ['--version'])
     nodeVersion = parseVersion(raw)
     nodeInstalled = nodeVersion !== null
-    nodeVersionOk = nodeVersion ? semverGte(nodeVersion, '22.12.0') : false
+    nodeVersionOk = nodeVersion ? semverGte(nodeVersion, '22.16.0') : false
   } catch {
     /* not installed */
   }
