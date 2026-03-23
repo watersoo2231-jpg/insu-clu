@@ -989,6 +989,131 @@
       .contact-pill:hover svg {
         transform: scale(1.15);
       }
+      /* ── Providers ── */
+      .providers {
+        padding: 4rem 1.5rem 5rem;
+        text-align: center;
+      }
+      .providers-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
+      .provider-card {
+        position: relative;
+        padding: 1.8rem 1.2rem 1.5rem;
+        text-align: center;
+        cursor: default;
+      }
+      .provider-card:hover {
+        border-color: rgba(255, 255, 255, 0.18);
+      }
+      .provider-badge {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 99px;
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        background: rgba(249, 115, 22, 0.15);
+        color: var(--primary);
+        border: 1px solid rgba(249, 115, 22, 0.3);
+      }
+      .provider-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 1.2rem;
+        font-weight: 800;
+        font-family: var(--font-heading);
+      }
+      .provider-card h4 {
+        font-size: 1rem;
+        font-weight: 800;
+        margin-bottom: 0.25rem;
+        letter-spacing: -0.02em;
+      }
+      .provider-model {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-bottom: 0.6rem;
+      }
+      .provider-price {
+        display: inline-block;
+        padding: 0.2rem 0.65rem;
+        border-radius: 6px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+      }
+      .provider-price--free {
+        background: rgba(52, 211, 153, 0.08);
+        border-color: rgba(52, 211, 153, 0.2);
+        color: var(--success);
+      }
+      .btn-provider {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.5rem 1.1rem;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 0.78rem;
+        font-weight: 700;
+        cursor: pointer;
+        border: 1px solid var(--glass-border);
+        background: var(--bg-card);
+        color: var(--text-muted);
+        transition: all 0.25s ease;
+        text-decoration: none;
+      }
+      .btn-provider:hover {
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      .btn-provider svg {
+        width: 12px;
+        height: 12px;
+      }
+      .providers-note {
+        margin-top: 1.5rem;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        opacity: 0.6;
+      }
+      @media (max-width: 1024px) {
+        .providers-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 768px) {
+        .providers-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.75rem;
+        }
+        .provider-card {
+          padding: 1.5rem 1rem 1.2rem;
+        }
+      }
+      @media (max-width: 480px) {
+        .providers-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
       /* ── Footer ── */
       footer {
         position: relative;
@@ -1493,7 +1618,7 @@
               </div>
               <h3 data-i18n="features.agent.title">AI 에이전트</h3>
               <p data-i18n="features.agent.desc">
-                Google, OpenAI, Anthropic, DeepSeek, GLM 등 5개 제공사를 지원합니다.
+                Google, OpenAI, Anthropic, DeepSeek, Ollama 등 7개 제공사를 지원합니다.
               </p>
             </div>
             <div class="glass feature-card feature-card--cyan reveal reveal-d3">
@@ -1551,6 +1676,23 @@
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- Providers -->
+      <section class="providers" id="providers-section">
+        <div class="container">
+          <span class="section-label reveal" data-i18n="providers.label">AI Providers</span>
+          <h2 class="section-title reveal" id="providers-title">어떤 AI를 선택할까?</h2>
+          <p class="section-sub reveal" id="providers-sub">
+            용도와 예산에 맞는 AI 제공사를 골라보세요. 가격은 100만 토큰 기준 입력/출력입니다.
+          </p>
+          <div class="providers-grid" id="providers-grid">
+            <!-- Dynamically rendered by router.js -->
+          </div>
+          <p class="providers-note reveal" id="providers-note" data-i18n="providers.note">
+            * 가격은 변동될 수 있습니다. 각 제공사 공식 페이지에서 최신 가격을 확인하세요.
+          </p>
         </div>
       </section>
 

@@ -189,6 +189,80 @@
     }
   }
 
+  /* ── Providers section ── */
+  var ARROW_SVG =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>'
+
+  function updateProviders(product) {
+    var p = PRODUCTS[product]
+    var section = _dom.providersSection
+    var grid = _dom.providersGrid
+    if (!section || !grid) return
+
+    if (!p.providers || !p.providers.length) {
+      section.style.display = 'none'
+      return
+    }
+    section.style.display = ''
+
+    var prefix = p.i18nPrefix
+    if (_dom.providersTitle)
+      _dom.providersTitle.textContent = getT(prefix + 'providers.title', 'providers.title')
+    if (_dom.providersSub)
+      _dom.providersSub.textContent = getT(prefix + 'providers.sub', 'providers.sub')
+
+    var badgeText = getT(prefix + 'providers.recommended', 'providers.recommended')
+    var btnText = getT(prefix + 'providers.signup', 'providers.signup')
+    var btnFreeText = getT(prefix + 'providers.download', 'providers.download')
+
+    if (_dom.providersNote)
+      _dom.providersNote.textContent = getT(prefix + 'providers.note', 'providers.note')
+
+    var html = ''
+    p.providers.forEach(function (prov) {
+      var isFree = prov.price === 'Free'
+      var safeUrl = /^https:\/\//.test(prov.url) ? prov.url : '#'
+      var letter = prov.name.charAt(0)
+      html +=
+        '<div class="glass provider-card">' +
+        (prov.recommended
+          ? '<span class="provider-badge">' + badgeText + '</span>'
+          : '') +
+        '<div class="provider-icon" style="background:linear-gradient(135deg,' +
+        prov.color +
+        '22,' +
+        prov.color +
+        '08);border:1px solid ' +
+        prov.color +
+        '33;color:' +
+        prov.color +
+        '">' +
+        letter +
+        '</div>' +
+        '<h4>' +
+        prov.name +
+        '</h4>' +
+        '<p class="provider-model">' +
+        prov.model +
+        '</p>' +
+        '<span class="provider-price' +
+        (isFree ? ' provider-price--free' : '') +
+        '">' +
+        prov.price +
+        '</span>' +
+        '<br>' +
+        '<a class="btn-provider" href="' +
+        safeUrl +
+        '" target="_blank" rel="noopener">' +
+        (isFree ? btnFreeText : btnText) +
+        ' ' +
+        ARROW_SVG +
+        '</a>' +
+        '</div>'
+    })
+    grid.innerHTML = html
+  }
+
   /* ── Cross banner ── */
   function updateCrossBanner(product) {
     var other = product === 'claw' ? 'code' : 'claw'
@@ -269,6 +343,7 @@
     updateFeatures(product)
     updateSteps(product)
     updateCTA(product)
+    updateProviders(product)
     updateCrossBanner(product)
     updateMeta(product)
     fetchVersion(product)
@@ -334,6 +409,11 @@
     _dom.crossBtn = document.getElementById('cross-banner-btn')
     _dom.crossBtnText = document.getElementById('cross-banner-btn-text')
     _dom.crossCard = document.querySelector('.cross-banner-card')
+    _dom.providersSection = document.getElementById('providers-section')
+    _dom.providersGrid = document.getElementById('providers-grid')
+    _dom.providersTitle = document.getElementById('providers-title')
+    _dom.providersSub = document.getElementById('providers-sub')
+    _dom.providersNote = document.getElementById('providers-note')
   }
 
   /* ── Init ── */

@@ -32,6 +32,7 @@ npm run build:win-local # Windows (로컬 빌드만)
 src/main/        → Main process (Node.js, 시스템 접근)
 src/preload/     → Preload (contextBridge로 IPC API 노출)
 src/renderer/    → Renderer process (React UI)
+src/shared/      → 공유 코드 (i18n: ko/en/ja/zh 4개 언어 지원)
 ```
 
 - **tsconfig.node.json**: main + preload 대상
@@ -52,6 +53,7 @@ src/renderer/    → Renderer process (React UI)
 | `troubleshooter.ts` | 포트 점유 확인, `openclaw doctor --fix` 실행 등 진단 도구     |
 | `uninstaller.ts`    | OpenClaw 삭제 (npm uninstall -g + 설정 디렉토리 정리)         |
 | `backup.ts`         | OpenClaw 설정 백업/복원 (tar 기반, WSL 지원)                  |
+| `oauth.ts`          | OpenAI Codex OAuth 인증 (PKCE 플로우, 로컬 콜백 서버)        |
 
 ### IPC 통신 패턴
 
@@ -80,7 +82,7 @@ IPC 채널 추가 시: `ipc-handlers.ts` 핸들러 → `preload/index.ts` electr
 - `install` 스텝은 환경 체크 결과에 따라 조건부 진입
 - `goTo()`로 스텝 건너뛰기 가능, `history` ref로 뒤로가기 지원
 - 각 Step 컴포넌트는 `src/renderer/src/steps/`에 위치, `onNext`/`onDone` 콜백으로 전환
-- 지원 Provider: `anthropic | google | openai | minimax | glm`
+- 지원 Provider: `anthropic | google | openai | minimax | glm | deepseek | ollama`
 
 ### Windows 지원 방식 (WSL 모드)
 
@@ -151,7 +153,7 @@ Windows에서는 WSL(Windows Subsystem for Linux) Ubuntu 내에서 Node.js/OpenC
 
 | 항목               | 값        | 주요 위치                                                   |
 | ------------------ | --------- | ----------------------------------------------------------- |
-| Node.js 최소 버전  | `22.12.0` | `env-checker.ts`                                            |
+| Node.js 최소 버전  | `22.16.0` | `env-checker.ts`                                            |
 | Gateway 포트       | `18789`   | `troubleshooter.ts`, `onboarder.ts`, `TroubleshootStep.tsx` |
 | 리부트 복원 만료   | 24시간    | `ipc-handlers.ts`                                           |
 | 트레이 폴링 간격   | 10초      | `tray-manager.ts`                                           |
