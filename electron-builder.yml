@@ -56,7 +56,7 @@ dmg:
       path: /Applications
 publish:
   provider: github
-  owner: pathocrionwater
+  owner: watersoo2231-jpg
   repo: insu-clu
   releaseType: release
 npmRebuild: false

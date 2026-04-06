@@ -58,8 +58,8 @@ jobs:
             const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
             pkg.name = 'insu-clu';
             pkg.description = '인수클루 - OpenClaw 원클릭 인스톨러';
-            pkg.author = 'pathocrionwater';
-            pkg.homepage = 'https://github.com/pathocrionwater/insu-clu';
+            pkg.author = 'watersoo2231-jpg';
+            pkg.homepage = 'https://github.com/watersoo2231-jpg/insu-clu';
             fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
           "
 
@@ -67,13 +67,13 @@ jobs:
           sed -i 's/appId: com.easyclaw.app/appId: com.insuclu.app/' electron-builder.yml
           sed -i 's/productName: EasyClaw/productName: 인수클루/' electron-builder.yml
           sed -i 's/executableName: EasyClaw/executableName: InsuClu/' electron-builder.yml
-          sed -i 's/owner: ybgwon96/owner: pathocrionwater/' electron-builder.yml
+          sed -i 's/owner: ybgwon96/owner: watersoo2231-jpg/' electron-builder.yml
           sed -i 's/repo: easyclaw/repo: insu-clu/' electron-builder.yml
 
           # 소스 코드 브랜딩 보장
           sed -i "s/com.easyclaw.app/com.insuclu.app/" src/main/index.ts
           sed -i "s/tray.setToolTip('EasyClaw')/tray.setToolTip('인수클루')/" src/main/services/tray-manager.ts
-          sed -i "s|https://github.com/ybgwon96/easyclaw|https://github.com/pathocrionwater/insu-clu|g" src/renderer/src/steps/DoneStep.tsx
+          sed -i "s|https://github.com/ybgwon96/easyclaw|https://github.com/watersoo2231-jpg/insu-clu|g" src/renderer/src/steps/DoneStep.tsx
           sed -i "s|dist/easy-claw-setup.exe|dist/insu-clu-setup.exe|g" .github/workflows/release.yml
           sed -i "s|dist/easy-claw.dmg|dist/insu-clu.dmg|g" .github/workflows/release.yml
 

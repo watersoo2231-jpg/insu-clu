@@ -4,8 +4,8 @@
   "description": "인수클루 - OpenClaw 원클릭 인스톨러",
   "license": "MIT",
   "main": "./out/main/index.js",
-  "author": "pathocrionwater",
-  "homepage": "https://github.com/pathocrionwater/insu-clu",
+  "author": "watersoo2231-jpg",
+  "homepage": "https://github.com/watersoo2231-jpg/insu-clu",
   "keywords": [
     "openclaw",
     "ai-agent",
