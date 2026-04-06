@@ -85,6 +85,15 @@ function App(): React.JSX.Element {
       const state = await window.electronAPI.wizard.loadState()
       if (state) {
         goTo(state.step as 'wslSetup' | 'envCheck')
+        return
+      }
+
+      // 이미 설치+설정 완료된 경우 → done 화면으로 바로 이동 (재설정 불필요)
+      if (env.nodeVersionOk && env.openclawInstalled) {
+        const cfg = await window.electronAPI.config.read()
+        if (cfg?.config?.provider && cfg?.config?.hasTelegram) {
+          goTo('done')
+        }
       }
     })
   }, [goTo])
