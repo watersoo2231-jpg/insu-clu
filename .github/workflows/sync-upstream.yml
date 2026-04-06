@@ -1,0 +1,111 @@
+name: Sync with upstream (easyclaw)
+
+on:
+  schedule:
+    # 6시간마다 실행 (UTC 기준)
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout insu-clu
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote
+        run: git remote add upstream https://github.com/ybgwon96/easyclaw.git
+
+      - name: Fetch upstream
+        run: git fetch upstream
+
+      - name: Check for new upstream changes
+        id: check
+        run: |
+          LOCAL=$(git rev-parse HEAD)
+          UPSTREAM=$(git rev-parse upstream/main)
+          if [ "$LOCAL" = "$UPSTREAM" ]; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No upstream changes detected."
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Upstream has new changes. Merging..."
+          fi
+
+      - name: Merge upstream (우리 변경사항 우선)
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          # -X ours: 충돌 시 인수클루 코드를 우선 유지 (리브랜딩 보존)
+          git merge upstream/main --no-edit -X ours -m "chore: sync with upstream easyclaw"
+
+      - name: Re-apply branding after merge
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          # package.json 브랜딩 보장
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.name = 'insu-clu';
+            pkg.description = '인수클루 - OpenClaw 원클릭 인스톨러';
+            pkg.author = 'pathocrionwater';
+            pkg.homepage = 'https://github.com/pathocrionwater/insu-clu';
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+
+          # electron-builder.yml 브랜딩 보장
+          sed -i 's/appId: com.easyclaw.app/appId: com.insuclu.app/' electron-builder.yml
+          sed -i 's/productName: EasyClaw/productName: 인수클루/' electron-builder.yml
+          sed -i 's/executableName: EasyClaw/executableName: InsuClu/' electron-builder.yml
+          sed -i 's/owner: ybgwon96/owner: pathocrionwater/' electron-builder.yml
+          sed -i 's/repo: easyclaw/repo: insu-clu/' electron-builder.yml
+
+          # 소스 코드 브랜딩 보장
+          sed -i "s/com.easyclaw.app/com.insuclu.app/" src/main/index.ts
+          sed -i "s/tray.setToolTip('EasyClaw')/tray.setToolTip('인수클루')/" src/main/services/tray-manager.ts
+          sed -i "s|https://github.com/ybgwon96/easyclaw|https://github.com/pathocrionwater/insu-clu|g" src/renderer/src/steps/DoneStep.tsx
+          sed -i "s|dist/easy-claw-setup.exe|dist/insu-clu-setup.exe|g" .github/workflows/release.yml
+          sed -i "s|dist/easy-claw.dmg|dist/insu-clu.dmg|g" .github/workflows/release.yml
+
+          git add -A
+          git diff --cached --quiet || git commit -m "chore: re-apply insu-clu branding after upstream sync"
+
+      - name: Push changes
+        if: steps.check.outputs.changed == 'true'
+        run: git push origin main
+
+      - name: Get upstream version
+        if: steps.check.outputs.changed == 'true'
+        id: version
+        run: |
+          VERSION=$(node -e "console.log(require('./package.json').version)")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create release tag if not exists
+        if: steps.check.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          TAG="v${VERSION}"
+          if ! git ls-remote --tags origin | grep -q "refs/tags/${TAG}$"; then
+            git tag "$TAG"
+            git push origin "$TAG"
+            gh release create "$TAG" \
+              --title "인수클루 $TAG" \
+              --notes "upstream easyclaw ${TAG} 동기화 자동 빌드" \
+              --draft
+            echo "Created release $TAG"
+          else
+            echo "Tag $TAG already exists, skipping."
+          fi

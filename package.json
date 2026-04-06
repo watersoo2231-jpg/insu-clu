@@ -1,11 +1,11 @@
 {
-  "name": "easy-claw",
+  "name": "insu-clu",
   "version": "1.3.37",
-  "description": "One-click installer for OpenClaw AI agent",
+  "description": "인수클루 - OpenClaw 원클릭 인스톨러",
   "license": "MIT",
   "main": "./out/main/index.js",
-  "author": "EasyClaw",
-  "homepage": "https://easyclaw.kr",
+  "author": "pathocrionwater",
+  "homepage": "https://github.com/pathocrionwater/insu-clu",
   "keywords": [
     "openclaw",
     "ai-agent",

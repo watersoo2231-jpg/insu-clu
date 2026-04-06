@@ -1,5 +1,5 @@
-appId: com.easyclaw.app
-productName: EasyClaw
+appId: com.insuclu.app
+productName: 인수클루
 directories:
   buildResources: build
 files:
@@ -13,7 +13,7 @@ asarUnpack:
   - resources/**
 win:
   icon: build/icon.ico
-  executableName: EasyClaw
+  executableName: InsuClu
   forceCodeSigning: false
   requestedExecutionLevel: asInvoker
   target:
@@ -56,7 +56,7 @@ dmg:
       path: /Applications
 publish:
   provider: github
-  owner: ybgwon96
-  repo: easyclaw
+  owner: pathocrionwater
+  repo: insu-clu
   releaseType: release
 npmRebuild: false
