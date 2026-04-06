@@ -20,11 +20,16 @@ win:
     - target: nsis
       arch:
         - x64
+    - target: portable
+      arch:
+        - x64
 nsis:
   artifactName: ${name}-setup.${ext}
   shortcutName: 인수클루
   uninstallDisplayName: 인수클루
   createDesktopShortcut: always
+portable:
+  artifactName: ${name}-portable.${ext}
 mac:
   icon: build/icon.icns
   hardenedRuntime: true
