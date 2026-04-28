@@ -43,9 +43,12 @@
   "tray": {
     "open": "打开 HardClaw",
     "gwRunning": "Gateway 运行中",
+    "gwRestarting": "Gateway 重启中...",
+    "gwFailed": "Gateway 失败（已达重启上限）",
     "gwStopped": "Gateway 已停止",
     "gwStart": "启动 Gateway",
     "gwStop": "停止 Gateway",
+    "copyDiagnostic": "🔧 复制诊断信息",
     "quit": "退出",
     "notifyRunning": "Gateway 正在运行",
     "notifyStopped": "Gateway 已停止",
